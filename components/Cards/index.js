@@ -19,42 +19,82 @@
 // Create a card for each of the articles and add the card to the DOM.
 
 
-axios.get('https://lambda-times-backend.herokuapp.com/articles')
-.then(response => {
-  // const articles = response.data.articles;
-  // const keys = Object.keys(articles);
-  // console.log(keys);
-  // console.log(articles);
-  // keys.forEach(article => {
-  //   // console.log(articles[article]);
-  //   entry.appendChild(cardComponent(article));
-  // })
-  response.data.articles.bootstrap.forEach( article => {
-    entry.append(cardComponent(article));
-  })
-})
-.catch(error => error);
-
 function cardComponent(obj) {
+  // Creating elements
   const card = document.createElement('div');
   const headline = document.createElement('div');
   const author = document.createElement('div');
   const imgContainer = document.createElement('div');
   const img = document.createElement('img');
-  const authorName = document.createElement('span');
+  const span = document.createElement('span');
 
+  // Adding classes and properties
   card.classList.add('card');
   headline.classList.add('headline');
   author.classList.add('author');
   imgContainer.classList.add('img-container');
-  img.setAttribute('href', `${obj.authorPhoto}`);
-  authorName.textContent = `By ${obj.authorName}`;
+  headline.textContent = `${obj.headline}`; 
+  img.setAttribute('src', `${obj.authorPhoto}`) 
+  span.textContent = `By ${obj.authorName}`
 
+  // Combining elements
   card.append(headline, author);
-  author.append(imgContainer, authorName);
+  author.append(imgContainer, span);
   imgContainer.append(img);
 
+  // console.log(card);
   return card;
 }
 
-const entry = document.querySelector('.cards-container');
+const cardContainer = document.querySelector('.cards-container');
+
+axios.get('https://lambda-times-backend.herokuapp.com/articles')
+.then(response => {
+  console.log(response.data.articles);
+  const keys = Object.keys(response.data.articles)
+  // console.log(response.data.articles[keys]);
+  keys.forEach(topic => {
+    response.data.articles[topic].forEach(obj => {
+      cardContainer.appendChild(cardComponent(obj));
+    })
+    
+  })
+  // keys.forEach(topic => {
+  //   // console.log(topic);
+  //   // console.log(response.data.articles[topic]);
+  //   cardContainer.appendChild(cardComponent(topic));
+  // })
+  // console.log(keys);
+  // const bootstrap = response.data.articles.bootstrap;
+  // const js = response.data.articles.javascript;
+  // const technology = response.data.articles.technology;
+  // const jquery = response.data.articles.jquery;
+  // const node = response.data.articles.node;
+  // const [bootstrap, javascript, technology, jquery, node] = response.data.articles;
+  // console.log(bootstrap);
+  // console.log(bootstrap);
+  // bootstrap.forEach(article => {
+  //   // console.log(article);
+  //   cardContainer.append(cardComponent(article));
+  // })
+
+  // js.forEach(article => {
+  //   // console.log(article);
+  //   cardContainer.append(cardComponent(article));
+  // })
+
+  // technology.forEach(article => {
+  //   // console.log(article);
+  //   cardContainer.append(cardComponent(article));
+  // })
+
+  // jquery.forEach(article => {
+  //   // console.log(article);
+  //   cardContainer.append(cardComponent(article));
+  // })
+
+  // node.forEach(article => {
+  //   // console.log(article);
+  //   cardContainer.append(cardComponent(article));
+  // })
+})
